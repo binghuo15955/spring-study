@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- xmlns命名空间 -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+             http://www.springframework.org/schema/beans/spring-beans.xsd
+             http://www.springframework.org/schema/context 
+             http://www.springframework.org/schema/context/spring-context.xsd
+             http://www.springframework.org/schema/aop 
+             http://www.springframework.org/schema/aop/spring-aop.xsd
+             http://www.springframework.org/schema/tx 
+             http://www.springframework.org/schema/tx/spring-tx.xsd
+             http://www.springframework.org/schema/mvc 
+             http://www.springframework.org/schema/mvc/spring-mvc.xsd
+             http://www.springframework.org/schema/context 
+             http://www.springframework.org/schema/context/spring-context.xsd">
+	<!-- mvc注解驱动 -->
+	<!-- 若没有这个，mvc:resources加上后controller就404了 -->
+	<mvc:annotation-driven />
+	<!-- 扫描controller的位置 -->
+	<!-- 为什么要net.dfrz.controller为了区别spring.xml扫描的部分，避免扫描两次类，然后就两个容器都有每个类的副本 -->
+	<context:component-scan
+		base-package="net.dfrz.controller" />
+	<!-- JSP视图解释器 -->
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/jsp/"></property>
+		<property name="suffix" value=".jsp"></property>
+		<property name="order" value="2"></property>
+	</bean>
+	<!-- 放行静态资源 -->
+	<mvc:resources location="/css/" mapping="/css/**" />
+	<mvc:resources location="/js/" mapping="/js/**" />
+	<mvc:resources location="/imgs/" mapping="/imgs/**" />
+	<mvc:resources location="/html/" mapping="/html/**" />
+</beans>
