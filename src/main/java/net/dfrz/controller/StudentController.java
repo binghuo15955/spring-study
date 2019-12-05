@@ -1,11 +1,14 @@
 package net.dfrz.controller;
 
-import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
+import java.util.UUID;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import net.dfrz.entity.Student;
 
@@ -28,6 +31,7 @@ public class StudentController {
 	 * 参数@PathVariable("stuid") String stuID,@PathVariable("name") String name
 	 * 
 	 * 6.传输JSON格式
+	 * 
 	 * @return
 	 */
 	@RequestMapping("/add")
@@ -51,10 +55,43 @@ public class StudentController {
 		return "";
 	}
 
-	@RequestMapping("/get")
+//	@RequestMapping("/get")
+	@RequestMapping(value="/get",method=RequestMethod.GET)
 	public String get() {
+		String msg="查询数据成功";
+		
 		System.out.println("get");
-		return "";
+		return "student/list";
 	}
+	
+	@RequestMapping("/json")
+	@ResponseBody
+	public Student json(ModelMap model) {
+		Student student=new Student();
+		student.setStuID(UUID.randomUUID().toString().replaceAll("-", ""));
+		student.setName("Liuliu");
+		student.setBirthday(new Date());
+		student.setMobile("15982938421332");
+		student.setAddr("福清");
+		
+		model.put("student", student);
+		return student;
+	}
+	
+	@RequestMapping("/gets")
+	public String gets(ModelMap model)
+	{
+		Student student = new Student();
+		student.setStuID("001");
+		student.setName("张三");
+		student.setBirthday(new Date());
+		student.setMobile("13799887234");
+		student.setAddr("福州");
+		
+		model.put("student", student);
+		
+		
+		return "student/list"; 
+	} 
 
 }

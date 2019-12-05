@@ -21,21 +21,98 @@
              http://www.springframework.org/schema/context/spring-context.xsd">
 	<!-- mvc注解驱动 -->
 	<!-- 若没有这个，mvc:resources加上后controller就404了 -->
-	<mvc:annotation-driven />
+	<mvc:annotation-driven validator="validator" />
+	<bean id="validator"
+		class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
+		<property name="providerClass" value="org.hibernate.validator.HibernateValidator" />
+		<property name="validationMessageSource" ref="validator_messages" />
+	</bean>
+
+	<bean id="validator_messages"
+		class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<property name="basenames">
+			<list>
+				<value>classpath:base</value>
+			</list>
+		</property>
+	</bean>
+
 	<!-- 扫描controller的位置 -->
 	<!-- 为什么要net.dfrz.controller为了区别spring.xml扫描的部分，避免扫描两次类，然后就两个容器都有每个类的副本 -->
 	<context:component-scan
 		base-package="net.dfrz.controller" />
-	<!-- JSP视图解释器 -->
-	<bean
-		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-		<property name="prefix" value="/jsp/"></property>
-		<property name="suffix" value=".jsp"></property>
-		<property name="order" value="2"></property>
+
+	<!-- 内容协商器 -->
+	<!-- 1、检查扩展名（如get.pdf）； 2、检查Parameter（如get?format=pdf）； 3、检查Accept Header -->
+	<bean id="contentNegotiationManager"
+		class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
+		<!-- 扩展名至mimeType的映射,即 /student/get.json => application/json -->
+		<property name="favorPathExtension" value="true" />
+		<!-- 用于开启 /student/get?format=json 的支持 -->
+		<property name="favorParameter" value="true" />
+		<property name="parameterName" value="format" />
+		<!-- 是否忽略Accept Header -->
+		<property name="ignoreAcceptHeader" value="false" />
+		<!--扩展名到MIME的映射；favorPathExtension, favorParameter是true时起作用 -->
+		<property name="mediaTypes">
+			<value>
+				json=application/json
+				xml=application/xml
+				html=text/html
+			</value>
+		</property>
+		<!-- 默认的content type ,在没有扩展名和参数时即: "/student/get" 时的默认展现形式 -->
+		<property name="defaultContentType" value="text/html" />
 	</bean>
+	<!-- 协商器的解析器 -->
+	<bean
+		class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+		<property name="viewResolvers">
+			<list>
+				<!-- JSON格式的解析器 -->
+				<!-- <bean class="net.dfrz.resolver.JsonResolver"></bean> -->
+				<!-- 无扩展名的解析器 -->
+				<bean
+					class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+					<property name="viewClass"
+						value="org.springframework.web.servlet.view.JstlView" />
+					<property name="prefix" value="/jsp/" />
+					<property name="suffix" value=".jsp"></property>
+				</bean>
+			</list>
+		</property>
+		<property name="defaultViews">
+			<list>
+				<!-- for application/json -->
+				<bean
+					class="com.alibaba.fastjson.support.spring.FastJsonJsonView" />
+				<!-- for application/xml -->
+				<bean
+					class="org.springframework.web.servlet.view.xml.MarshallingView">
+					<property name="marshaller">
+						<!-- xstream.XStreamMarshaller -->
+						<bean class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
+							<property name="classesToBeBound">
+								<list>
+									<value>net.dfrz.entity.Student</value>
+								</list>
+							</property>
+						</bean>
+					</property>
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+
+	<!-- JSP视图解释器 -->
+	<!-- <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver"> 
+		<property name="prefix" value="/jsp/"></property> <property name="suffix" 
+		value=".jsp"></property> <property name="order" value="2"></property> </bean> -->
 	<!-- 放行静态资源 -->
 	<mvc:resources location="/css/" mapping="/css/**" />
 	<mvc:resources location="/js/" mapping="/js/**" />
 	<mvc:resources location="/imgs/" mapping="/imgs/**" />
-	<mvc:resources location="/html/" mapping="/html/**" />
+	<mvc:resources location="/jsp/" mapping="/jsp/**" />
+	<mvc:resources location="/lib/" mapping="/lib/**" />
 </beans>

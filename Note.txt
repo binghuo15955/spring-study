@@ -1,0 +1,33 @@
+1.输入：
+	-字符型：
+		-基本数据类型：A名称相同	B名称不同（@requestParam）
+		-对象数据类型：名称一致
+		-JSON数据类型：@RequestBody
+		-路径参数类型：@PathVariable
+	-字节型：
+		-文件上传
+		
+2.输出：
+	-字符型：
+		-基本数据类型到JSP:
+		-对象数据到JSP:
+		-基本数据类型到HTML(AJAX+JSON)
+		-对象数据类型到HTML(AJAX+JSON)
+		...
+		->xml (xom) ->pdf  ->xls
+		
+		数据(基本数据、对象数据)到文件(JSP\HTML\XML\PDF等)的方式:
+			-字符串
+			-对象
+			Methods:1.原生的request对象;
+					2.ModelAndView
+					3.ModelMap
+					4.如果是JSON格式，需要(@ReseponseBody)参与
+		
+	-字节型：
+		-文件下载
+		-图片格式
+		
+3.页面跳转
+	-return "forward:/user/get" //直接跳转带参数
+	-return "redirect:/jsp/user.jsp"//类似重定向，不带参数
