@@ -70,7 +70,7 @@
 		<property name="viewResolvers">
 			<list>
 				<!-- JSON格式的解析器 -->
-				<!-- <bean class="net.dfrz.resolver.JsonResolver"></bean> -->
+				<bean class="net.dfrz.resolver.JsonResolver"></bean>
 				<!-- 无扩展名的解析器 -->
 				<bean
 					class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -84,6 +84,7 @@
 		<property name="defaultViews">
 			<list>
 				<!-- for application/json -->
+				 <!-- 对JSON格式不做任何处理，就直接用view，否则用上面的jsonresolver(JSON解析器) -->
 				<bean
 					class="com.alibaba.fastjson.support.spring.FastJsonJsonView" />
 				<!-- for application/xml -->

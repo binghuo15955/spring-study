@@ -4,6 +4,9 @@ import java.util.Date;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.alibaba.fastjson.annotation.JSONField;
 import com.sun.xml.txw2.annotation.XmlElement;
 
 @XmlRootElement
@@ -42,6 +45,10 @@ public class Student {
 		this.name = name;
 	}
 	@XmlElement
+	//序列化--局部覆盖全局JsonResolver
+	//@JSONField(format="yyyy/MM/dd")  
+	//反序列化
+	@DateTimeFormat(pattern="yyyy/mm/dd")
 	public Date getBirthday() {
 		return birthday;
 	}
