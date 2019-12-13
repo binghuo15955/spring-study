@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
-	xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
 			http://www.springframework.org/schema/beans/spring-beans.xsd
 			http://www.springframework.org/schema/context 
@@ -19,7 +22,7 @@
 	<!-- mvc注解驱动 -->
 	<!-- 若没有这个，mvc:resources加上后controller就404了 -->
 	<mvc:annotation-driven validator="validator" />
-	
+
 	<bean id="validator"
 		class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
 		<property name="providerClass"
@@ -37,6 +40,11 @@
 		</property>
 	</bean>
 	
+	<!-- 扫描controller的位置 -->
+	<!-- 为什么要net.dfrz.controller为了区别spring.xml扫描的部分，避免扫描两次类，然后就两个容器都有每个类的副本 -->
+	<context:component-scan
+		base-package="net.dfrz.controller" />
+		
 	<!--拦截器 -->
 	<mvc:interceptors>
 		<!-- 多个拦截器,顺序执行 -->
@@ -45,14 +53,11 @@
 			<bean class="net.dfrz.interceptor.FileInterceptor"></bean>
 		</mvc:interceptor>
 	</mvc:interceptors>
-	
- 	<bean id="handlerExceptionResolver" class="net.dfrz.exception.MyExceptionResolver"/>
-		
-	<!-- 扫描controller的位置 -->
-	<!-- 为什么要net.dfrz.controller为了区别spring.xml扫描的部分，避免扫描两次类，然后就两个容器都有每个类的副本 -->
-	<context:component-scan
-		base-package="net.dfrz.controller" />
 
+
+	<bean id="handlerExceptionResolver"
+		class="net.dfrz.exception.MyExceptionResolver" />
+		
 	<!-- 内容协商器 -->
 	<!-- 1、检查扩展名（如get.pdf）； 2、检查Parameter（如get?format=pdf）； 3、检查Accept Header -->
 	<bean id="contentNegotiationManager"

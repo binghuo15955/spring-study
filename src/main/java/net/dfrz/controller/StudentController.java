@@ -90,7 +90,6 @@ public class StudentController {
 		
 		model.put("student", student);
 		
-		
 		return "student/list"; 
 	} 
 

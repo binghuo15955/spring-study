@@ -10,6 +10,7 @@ public class HelloWorldController {
 	@RequestMapping("/hello")	//设定到方法的请求路径（访问时需与类的mapping合并）
 	public String hello() throws Exception {
 		int i =10/0;
+		
 		System.out.println("I DO WORK!");
 		return "hello";
 	}

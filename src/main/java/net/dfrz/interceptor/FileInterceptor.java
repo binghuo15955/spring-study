@@ -10,13 +10,13 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 public class FileInterceptor extends HandlerInterceptorAdapter{
 
 	@Override
-	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
-			throws Exception {
+	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception
+			 {
 		DefaultMultipartHttpServletRequest myRequest=(DefaultMultipartHttpServletRequest)request;
 		
 		//获取到扩展名后与自己定义的扩展名允许列表比较
 		myRequest.getFileNames();
-		
+	
 		return super.preHandle(request, response, handler);
 	} 
 		

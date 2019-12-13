@@ -12,9 +12,13 @@ public class MyExceptionResolver implements HandlerExceptionResolver{
 	public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler,
 			Exception ex) {
 		ModelAndView mv=new ModelAndView();
-		mv.addObject("ex",ex);
-		mv.setViewName("/exception/home");
-		return mv;
+		if(ex instanceof Exception) {
+			mv.addObject("ex",ex);
+			mv.setViewName("/exception/home");
+			return mv;
+		}
+		
+		return null;
 	}
 	
 

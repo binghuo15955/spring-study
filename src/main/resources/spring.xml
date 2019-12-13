@@ -16,7 +16,7 @@
 		http://www.springframework.org/schema/tx 
 		http://www.springframework.org/schema/tx/spring-tx.xsd ">
 
-<!-- 	<context:component-scan base-package="net.dfrz.dao,net.dfrz.service" /> -->
+ 	<context:component-scan base-package="net.dfrz.dao,net.dfrz.service" />
 
 	<!-- 配置druid数据源 -->
 	<bean name="dataSource"
