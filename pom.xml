@@ -134,7 +134,7 @@
 		<dependency><!-- 这个是领导 -->
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-validator</artifactId>
-			<version>5.4.1.Final</version>
+			<version>5.4.2.Final</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/javax.validation/validation-api -->
 		<dependency><!-- 这个是干活的员工 -->
